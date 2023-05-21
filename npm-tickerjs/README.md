@@ -1,11 +1,11 @@
-# Tickerjs &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/tickerjs.svg?style=flat)](https://www.npmjs.com/package/tickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-2.75%20kB-brightgreen)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/dist/ticker.js)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs.svg?style=flat)](https://www.npmjs.com/package/@projectleo/tickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-2.75%20kB-brightgreen)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/dist/ticker.js)
 
 Tickerjs provides a more easier way to request animation frames.
 
 ## Installation
 
 ```shell
-npm install tickerjs
+npm install @projectleo/tickerjs
 ```
 
 ## Examples
@@ -13,7 +13,7 @@ npm install tickerjs
 Basic example:
 
 ```javascript
-import { requestAnimationFrames } from 'tickerjs'
+import { requestAnimationFrames } from '@projectleo/tickerjs'
 
 const cancelAnimationFrames = requestAnimationFrames({
     actionOnFrame() {
@@ -27,7 +27,7 @@ setTimeout(cancelAnimationFrames, 5000)
 Complicated example:
 
 ```javascript
-import { twentyFour, thirty, requestAnimationFrames } from 'tickerjs'
+import { twentyFour, thirty, requestAnimationFrames } from '@projectleo/tickerjs'
 
 /* some code */
 

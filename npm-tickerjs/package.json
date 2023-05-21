@@ -1,5 +1,5 @@
 {
-  "name": "tickerjs",
+  "name": "@projectleo/tickerjs",
   "version": "1.0.0",
   "description": "A more easier way to request animation frames.",
   "main": "dist/ticker.js",
