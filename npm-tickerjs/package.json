@@ -1,0 +1,33 @@
+{
+  "name": "tickerjs",
+  "version": "1.0.0",
+  "description": "A more easier way to request animation frames.",
+  "main": "dist/ticker.js",
+  "types": "types/ticker.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "rm -vrf ./dist ./types&&rollup -c&&printf \"\\n\"&&npx -p typescript tsc src/ticker.js --allowJs --declaration --emitDeclarationOnly --extendedDiagnostics --outDir types --removeComments true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alengYuan/ProjectLeo4Packages.git"
+  },
+  "keywords": [
+    "ticker",
+    "requestAnimationFrame",
+    "esm"
+  ],
+  "author": "Aleng Yuan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alengYuan/ProjectLeo4Packages/issues"
+  },
+  "homepage": "https://github.com/alengYuan/ProjectLeo4Packages/tree/main/npm-tickerjs#readme",
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.3",
+    "@types/node": "^20.2.1",
+    "eslint": "^8.40.0",
+    "prettier-eslint": "^15.0.1",
+    "rollup": "^3.22.0"
+  }
+}
