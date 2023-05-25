@@ -1,4 +1,4 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs.svg?style=flat)](https://www.npmjs.com/package/@projectleo/tickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-2.75%20kB-brightgreen)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/dist/ticker.js)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs.svg?style=flat)](https://www.npmjs.com/package/@projectleo/tickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-3.18%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
 
 Tickerjs provides a more easier way to request animation frames.
 
@@ -27,9 +27,19 @@ setTimeout(cancelAnimationFrames, 5000)
 Complicated example:
 
 ```javascript
-import { twentyFour, thirty, requestAnimationFrames } from '@projectleo/tickerjs'
+import {
+    twentyFour,
+    thirty,
+    requestAnimationFrames,
+    getStructuredTime,
+} from '@projectleo/tickerjs'
 
 /* some code */
+
+const { minute: totalMinutes, second: totalSeconds } = getStructuredTime(
+    thirty.second,
+    'minute',
+)
 
 requestAnimationFrames({
     totalTime: thirty.second,
@@ -37,10 +47,18 @@ requestAnimationFrames({
     actionOnStart() {
         audioElement.play()
     },
-    actionOnFrame({ frameCount }) {
+    actionOnFrame({ remainingTime, frameCount }) {
         /* some code */
 
+        const { minute: remainingMinutes, second: remainingSeconds } =
+            getStructuredTime(remainingTime, 'minute')
+
         ctx.drawImage(imageFrames[frameCount], 0, 0)
+        ctx.fillText(
+            `${remainingMinutes}:${remainingSeconds} / ${totalMinutes}:${totalSeconds}`,
+            4,
+            20,
+        )
 
         /* some code */
     },
@@ -128,6 +146,45 @@ function minute(minute: number): number;
 function hour(hour: number): number;
 function day(day: number): number;
 ```
+
+### Utility function
+
+```typescript
+type StructuredTimeWithDayUnit = {
+    day: number;
+    hour: number;
+    minute: number;
+    second: number;
+    millisecond: number;
+};
+
+type StructuredTimeWithHourUnit = {
+    hour: number;
+    minute: number;
+    second: number;
+    millisecond: number;
+};
+
+type StructuredTimeWithMinuteUnit = {
+    minute: number;
+    second: number;
+    millisecond: number;
+};
+
+type StructuredTimes = {
+    day: StructuredTimeWithDayUnit;
+    hour: StructuredTimeWithHourUnit;
+    minute: StructuredTimeWithMinuteUnit;
+};
+
+const getStructuredTime:
+    <T extends keyof StructuredTimes>(totalMilliseconds:⁰ number, highestUnit:¹ T) =>²
+    StructuredTimes[T];
+```
+
+-   ⁰ [`totalMilliseconds`]: Total time to be structured, in milliseconds.
+-   ¹ [`highestUnit`]: The highest unit to be used when structuring time, you can only choose one from `'day'`, `'hour'` and `'minute'`.
+-   ² [`getStructuredTime()`]: It would return an object that contains structured time fields, fields are based on specified `highestUnit`.
 
 ## Troubleshooting
 

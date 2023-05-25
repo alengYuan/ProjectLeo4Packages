@@ -1,7 +1,18 @@
-const _ratioOfSecondsToMilliseconds = 1000
-const _ratioOfMinutesToSeconds = 60
-const _ratioOfHoursToMinutes = 60
 const _ratioOfDaysToHours = 24
+const _ratioOfHoursToMinutes = 60
+const _ratioOfMinutesToSeconds = 60
+const _ratioOfSecondsToMilliseconds = 1000
+const _ratioOfMinutesToMilliseconds =
+    _ratioOfMinutesToSeconds * _ratioOfSecondsToMilliseconds
+const _ratioOfHoursToMilliseconds =
+    _ratioOfHoursToMinutes *
+    _ratioOfMinutesToSeconds *
+    _ratioOfSecondsToMilliseconds
+const _ratioOfDaysToMilliseconds =
+    _ratioOfDaysToHours *
+    _ratioOfHoursToMinutes *
+    _ratioOfMinutesToSeconds *
+    _ratioOfSecondsToMilliseconds
 
 /**
  * @param {number} second
@@ -15,28 +26,21 @@ export const second = second =>
  * @returns {number}
  */
 export const minute = minute =>
-    minute * _ratioOfMinutesToSeconds * _ratioOfSecondsToMilliseconds
+    minute * _ratioOfMinutesToMilliseconds
 
 /**
  * @param {number} hour
  * @returns {number}
  */
 export const hour = hour =>
-    hour *
-    _ratioOfHoursToMinutes *
-    _ratioOfMinutesToSeconds *
-    _ratioOfSecondsToMilliseconds
+    hour * _ratioOfHoursToMilliseconds
 
 /**
  * @param {number} day
  * @returns {number}
  */
 export const day = day =>
-    day *
-    _ratioOfDaysToHours *
-    _ratioOfHoursToMinutes *
-    _ratioOfMinutesToSeconds *
-    _ratioOfSecondsToMilliseconds
+    day * _ratioOfDaysToMilliseconds
 
 /**
  * @typedef {{
@@ -448,3 +452,105 @@ export const requestAnimationFrames = ({
         cancelAnimationFrame(requestID)
     }
 }
+
+/**
+ * @typedef {{
+ * day:number,
+ * hour:number,
+ * minute:number,
+ * second:number,
+ * millisecond:number,
+ * }} StructuredTimeWithDayUnit
+ *
+ * @param {number} totalMilliseconds
+ * @returns {StructuredTimeWithDayUnit}
+ */
+const _getStructuredTimeWithDayUnit = totalMilliseconds => {
+    const remainingHours = totalMilliseconds % _ratioOfDaysToMilliseconds
+    const remainingMinutes = remainingHours % _ratioOfHoursToMilliseconds
+    const remainingSeconds = remainingMinutes % _ratioOfMinutesToMilliseconds
+    const remainingMilliseconds =
+        remainingSeconds % _ratioOfSecondsToMilliseconds
+
+    const day =
+        (totalMilliseconds - remainingHours) / _ratioOfDaysToMilliseconds
+    const hour =
+        (remainingHours - remainingMinutes) / _ratioOfHoursToMilliseconds
+    const minute =
+        (remainingMinutes - remainingSeconds) / _ratioOfMinutesToMilliseconds
+    const second =
+        (remainingSeconds - remainingMilliseconds) /
+        _ratioOfSecondsToMilliseconds
+
+    return { day, hour, minute, second, millisecond: remainingMilliseconds }
+}
+
+/**
+ * @typedef {{
+ * hour:number,
+ * minute:number,
+ * second:number,
+ * millisecond:number,
+ * }} StructuredTimeWithHourUnit
+ *
+ * @param {number} totalMilliseconds
+ * @returns {StructuredTimeWithHourUnit}
+ */
+const _getStructuredTimeWithHourUnit = totalMilliseconds => {
+    const remainingMinutes = totalMilliseconds % _ratioOfHoursToMilliseconds
+    const remainingSeconds = remainingMinutes % _ratioOfMinutesToMilliseconds
+    const remainingMilliseconds =
+        remainingSeconds % _ratioOfSecondsToMilliseconds
+
+    const hour =
+        (totalMilliseconds - remainingMinutes) / _ratioOfHoursToMilliseconds
+    const minute =
+        (remainingMinutes - remainingSeconds) / _ratioOfMinutesToMilliseconds
+    const second =
+        (remainingSeconds - remainingMilliseconds) /
+        _ratioOfSecondsToMilliseconds
+
+    return { hour, minute, second, millisecond: remainingMilliseconds }
+}
+
+/**
+ * @typedef {{
+ * minute:number,
+ * second:number,
+ * millisecond:number,
+ * }} StructuredTimeWithMinuteUnit
+ *
+ * @param {number} totalMilliseconds
+ * @returns {StructuredTimeWithMinuteUnit}
+ */
+const _getStructuredTimeWithMinuteUnit = totalMilliseconds => {
+    const remainingSeconds = totalMilliseconds % _ratioOfMinutesToMilliseconds
+    const remainingMilliseconds =
+        remainingSeconds % _ratioOfSecondsToMilliseconds
+
+    const minute =
+        (totalMilliseconds - remainingSeconds) / _ratioOfMinutesToMilliseconds
+    const second =
+        (remainingSeconds - remainingMilliseconds) /
+        _ratioOfSecondsToMilliseconds
+
+    return { minute, second, millisecond: remainingMilliseconds }
+}
+
+/**
+ * @typedef {{
+ * day:StructuredTimeWithDayUnit,
+ * hour:StructuredTimeWithHourUnit,
+ * minute:StructuredTimeWithMinuteUnit,
+ * }} StructuredTimes
+ *
+ * @type {<T extends keyof StructuredTimes>(
+ * totalMilliseconds:number,highestUnit:T,
+ * )=>StructuredTimes[T]}
+ */
+export const getStructuredTime = (totalMilliseconds, highestUnit) =>
+    ({
+        day: _getStructuredTimeWithDayUnit(totalMilliseconds),
+        hour: _getStructuredTimeWithHourUnit(totalMilliseconds),
+        minute: _getStructuredTimeWithMinuteUnit(totalMilliseconds),
+    }[highestUnit])

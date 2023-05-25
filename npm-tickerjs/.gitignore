@@ -9,8 +9,8 @@ lerna-debug.log*
 package-lock.json
 
 node_modules
-dist/*.map
-dist-ssr/*.map
+dist
+dist-ssr
 types
 *.local
 
