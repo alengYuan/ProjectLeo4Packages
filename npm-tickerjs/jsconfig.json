@@ -8,13 +8,7 @@
         "noImplicitReturns": true,
         "noUncheckedIndexedAccess": true,
         "strict": true,
-        "target": "esnext",
-        "typeRoots": [
-            "node_modules/@types/**"
-        ],
-        "types": [
-            "node"
-        ]
+        "target": "esnext"
     },
     "exclude": [
         "**/node_modules/*",
