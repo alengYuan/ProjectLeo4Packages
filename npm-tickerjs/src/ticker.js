@@ -342,7 +342,7 @@ export const requestAnimationFrames = ({
     let remainingTime = totalTime ?? Infinity
     let frameCount = initialFrameCount
 
-    const specificFrameRate = typeof frameRate === 'undefined' ? NaN : frameRate
+    const specificFrameRate = frameRate ?? NaN
     const totalFrames = Math.floor(
         remainingTime * specificFrameRate / _ratioOfSecondsToMilliseconds,
     )
