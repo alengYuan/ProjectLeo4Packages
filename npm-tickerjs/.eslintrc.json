@@ -2,15 +2,14 @@
     "env": {
         "browser": true,
         "node": true,
-        "commonjs": true,
         "es6": true,
+        "es2016": true,
         "es2017": true,
+        "es2018": true,
+        "es2019": true,
         "es2020": true,
         "es2021": true,
-        "worker": true,
-        "serviceworker": true,
-        "webextensions": true,
-        "greasemonkey": true
+        "es2022": true
     },
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -41,6 +40,7 @@
             "always"
         ],
         "no-const-assign": "error",
+        "no-constant-binary-expression": "error",
         "no-constant-condition": "error",
         "no-constructor-return": "error",
         "no-control-regex": "error",
@@ -75,12 +75,14 @@
         "no-irregular-whitespace": [
             "error",
             {
+                "skipStrings": true,
                 "skipRegExps": true,
                 "skipTemplates": true
             }
         ],
         "no-loss-of-precision": "error",
         "no-misleading-character-class": "error",
+        "no-new-native-nonconstructor": "error",
         "no-new-symbol": "error",
         "no-obj-calls": "error",
         "no-promise-executor-return": "error",
@@ -182,7 +184,19 @@
             "error",
             "always"
         ],
-        "max-classes-per-file": "error",
+        "logical-assignment-operators": [
+            "error",
+            "always",
+            {
+                "enforceForIfStatements": true
+            }
+        ],
+        "max-classes-per-file": [
+            "error",
+            {
+                "ignoreExpressions": true
+            }
+        ],
         "max-depth": "off",
         "max-lines": "off",
         "max-lines-per-function": "off",
@@ -196,7 +210,7 @@
         "no-bitwise": "error",
         "no-caller": "error",
         "no-case-declarations": "error",
-        "no-confusing-arrow": "error",
+        "no-confusing-arrow": "off",
         "no-console": [
             "error",
             {
@@ -208,7 +222,7 @@
         ],
         "no-continue": "off",
         "no-delete-var": "error",
-        "no-div-regex": "error",
+        "no-div-regex": "off",
         "no-else-return": [
             "error",
             {
@@ -222,11 +236,17 @@
             }
         ],
         "no-empty-function": "error",
+        "no-empty-static-block": "error",
         "no-eq-null": "error",
         "no-eval": "error",
         "no-extend-native": "error",
         "no-extra-bind": "error",
-        "no-extra-boolean-cast": "error",
+        "no-extra-boolean-cast": [
+            "error",
+            {
+                "enforceForLogicalOperands": true
+            }
+        ],
         "no-extra-label": "error",
         "no-extra-semi": "error",
         "no-floating-decimal": "error",
@@ -240,10 +260,15 @@
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
         "no-inline-comments": "error",
-        "no-invalid-this": "off",
+        "no-invalid-this": "error",
         "no-iterator": "error",
         "no-label-var": "error",
-        "no-labels": "error",
+        "no-labels": [
+            "error",
+            {
+                "allowLoop": true
+            }
+        ],
         "no-lone-blocks": "error",
         "no-lonely-if": "error",
         "no-loop-func": "error",
@@ -289,7 +314,7 @@
             "error",
             "always"
         ],
-        "no-return-await": "error",
+        "no-return-await": "off",
         "no-script-url": "error",
         "no-sequences": "error",
         "no-shadow": "off",
@@ -356,11 +381,11 @@
             "error",
             "always"
         ],
-        "prefer-arrow-callback": "off",
+        "prefer-arrow-callback": "error",
         "prefer-const": [
             "error",
             {
-                "destructuring": "all",
+                "destructuring": "any",
                 "ignoreReadBeforeAssign": true
             }
         ],
@@ -368,6 +393,7 @@
         "prefer-exponentiation-operator": "error",
         "prefer-named-capture-group": "error",
         "prefer-numeric-literals": "error",
+        "prefer-object-has-own": "error",
         "prefer-object-spread": "error",
         "prefer-promise-reject-errors": [
             "error",
