@@ -1,4 +1,4 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs.svg?style=flat)](https://www.npmjs.com/package/@projectleo/tickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-3.18%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) ![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs) [![bundle size](https://img.shields.io/badge/bundle%20size-3.37%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
 
 Tickerjs provides a more easier way to request animation frames.
 
@@ -77,7 +77,7 @@ requestAnimationFrames({
  * @throws {RangeError} `NaN`, `0`, negative numbers and non-integers are not valid for `totalTime` and `frameRate`.
  * @throws {RangeError} `Infinity` is not valid for `frameRate`.
  */
-function requestAnimationFrames({ totalTime, frameRate, actionOnStart, actionOnFrame, actionOnEnd, }: {
+const requestAnimationFrames: (args: {
     totalTime?:⁰ number;
     frameRate?:¹ number;
     actionOnStart?:² () => void;
@@ -89,7 +89,7 @@ function requestAnimationFrames({ totalTime, frameRate, actionOnStart, actionOnF
         continueHandleFrames: boolean;
     };
     actionOnEnd?:⁸ () => void;
-}):⁹ never | (() => void);
+}) =>⁹ (never | (() => void));
 ```
 
 -   ⁰ [`totalTime`]: Total time of animation, in milliseconds, if it is not specified, its value is `Infinity`.
@@ -103,49 +103,19 @@ function requestAnimationFrames({ totalTime, frameRate, actionOnStart, actionOnF
 -   ⁸ [`actionOnEnd`]: Called when the animation ends.
 -   ⁹ [`requestAnimationFrames()`]: It would return a function used to cancel remaining animation frames, if use this function, `actionOnEnd` would not be called.
 
-### Time numbers
+### Configuration function
 
-Tickerjs provides a series of commonly used numerical constants:
-
-|Number|Object|Property|Property|Property|Property|Property|Property|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**1**|**one**|*millisecond*|*second*|***minute***|***hour***|***day***|***fps***|
-|**2**|**two**|*millisecond*|*second*|***minute***|***hour***|***day***|*fps*|
-|**3**|**three**|*millisecond*|***second***|***minute***|***hour***|***day***|*fps*|
-|**5**|**five**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**7**|**seven**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**10**|**ten**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**12**|**twelve**|*millisecond*|*second*|*minute*|***hour***|*day*|*fps*|
-|**14**|**fourteen**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**15**|**fifteen**|*millisecond*|***second***|***minute***|*hour*|***day***|*fps*|
-|**20**|**twenty**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**21**|**twentyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**24**|**twentyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**25**|**twentyFive**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**28**|**twentyEight**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**29**|**twentyNine**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**30**|**thirty**|*millisecond*|***second***|***minute***|*hour*|***day***|***fps***|
-|**31**|**thirtyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**45**|**fortyFive**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**48**|**fortyEight**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**50**|**fifty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**60**|**sixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**90**|**ninety**|*millisecond*|***second***|***minute***|*hour*|*day*|***fps***|
-|**120**|**oneHundredTwenty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**144**|**oneHundredFortyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**240**|**twoHundredForty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**300**|**threeHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**360**|**threeHundredSixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**500**|**fiveHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-
-If you need other specific values for `totalTime` of `requestAnimationFrames`, these functions would be useful:
+You may use polyfill if you need your application to run in any runtime that doesn't support `requestAnimationFrame()` and `cancelAnimationFrame()`. Tickerjs provides a function to help you to let them work with `requestAnimationFrames()` without affecting the global variable.
 
 ```typescript
-function second(second: number): number;
-function minute(minute: number): number;
-function hour(hour: number): number;
-function day(day: number): number;
+const specifyAnimationFrameManager: (args: {
+    requestAnimationFrame:⁰ (callback: (time: number) => void) => number;
+    cancelAnimationFrame:¹ (handle: number) => void;
+}) => void;
 ```
+
+-   ⁰ [`requestAnimationFrame`]: [🔗 Description on MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame).
+-   ¹ [`cancelAnimationFrame`]: [🔗 Description on MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/cancelAnimationFrame).
 
 ### Utility function
 
@@ -185,6 +155,48 @@ const getStructuredTime:
 -   ⁰ [`totalMilliseconds`]: Total time to be structured, in milliseconds.
 -   ¹ [`highestUnit`]: The highest unit to be used when structuring time, you can only choose one from `'day'`, `'hour'` and `'minute'`.
 -   ² [`getStructuredTime()`]: It would return an object that contains structured time fields, fields are based on specified `highestUnit`.
+
+Tickerjs provides a series of commonly used numerical constants:
+
+|Number|Object|Property|Property|Property|Property|Property|Property|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**1**|**one**|*millisecond*|*second*|***minute***|***hour***|***day***|***fps***|
+|**2**|**two**|*millisecond*|*second*|***minute***|***hour***|***day***|*fps*|
+|**3**|**three**|*millisecond*|***second***|***minute***|***hour***|***day***|*fps*|
+|**5**|**five**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
+|**7**|**seven**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**10**|**ten**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
+|**12**|**twelve**|*millisecond*|*second*|*minute*|***hour***|*day*|*fps*|
+|**14**|**fourteen**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**15**|**fifteen**|*millisecond*|***second***|***minute***|*hour*|***day***|*fps*|
+|**20**|**twenty**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
+|**21**|**twentyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**24**|**twentyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**25**|**twentyFive**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**28**|**twentyEight**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**29**|**twentyNine**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**30**|**thirty**|*millisecond*|***second***|***minute***|*hour*|***day***|***fps***|
+|**31**|**thirtyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
+|**45**|**fortyFive**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
+|**48**|**fortyEight**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**50**|**fifty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**60**|**sixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**90**|**ninety**|*millisecond*|***second***|***minute***|*hour*|*day*|***fps***|
+|**120**|**oneHundredTwenty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**144**|**oneHundredFortyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**240**|**twoHundredForty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**300**|**threeHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**360**|**threeHundredSixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+|**500**|**fiveHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+
+If you need other specific values for `totalTime` of `requestAnimationFrames`, these functions would be useful:
+
+```typescript
+const second: (second: number) => number;
+const minute: (minute: number) => number;
+const hour: (hour: number) => number;
+const day: (day: number) => number;
+```
 
 ## Troubleshooting
 

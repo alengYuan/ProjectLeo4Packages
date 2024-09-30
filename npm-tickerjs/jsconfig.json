@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
         "allowJs": true,
+        "allowSyntheticDefaultImports": true,
         "checkJs": true,
         "module": "esnext",
         "moduleResolution": "node",
+        "noEmit": true,
         "noErrorTruncation": true,
         "noImplicitReturns": true,
         "noUncheckedIndexedAccess": true,
+        "resolveJsonModule": true,
         "strict": true,
         "target": "esnext"
     },

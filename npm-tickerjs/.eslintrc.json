@@ -2,6 +2,7 @@
     "env": {
         "browser": true,
         "node": true,
+        "commonjs": true,
         "es6": true,
         "es2016": true,
         "es2017": true,
@@ -9,7 +10,8 @@
         "es2019": true,
         "es2020": true,
         "es2021": true,
-        "es2022": true
+        "es2022": true,
+        "worker": true
     },
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -32,7 +34,7 @@
         "for-direction": "error",
         "getter-return": "error",
         "no-async-promise-executor": "error",
-        "no-await-in-loop": "error",
+        "no-await-in-loop": "off",
         "no-class-assign": "error",
         "no-compare-neg-zero": "error",
         "no-cond-assign": [
@@ -59,12 +61,7 @@
         "no-empty-character-class": "error",
         "no-empty-pattern": "error",
         "no-ex-assign": "error",
-        "no-fallthrough": [
-            "error",
-            {
-                "commentPattern": "break[\\s\\w]*omitted"
-            }
-        ],
+        "no-fallthrough": "off",
         "no-func-assign": "error",
         "no-import-assign": "error",
         "no-inner-declarations": [
@@ -85,7 +82,7 @@
         "no-new-native-nonconstructor": "error",
         "no-new-symbol": "error",
         "no-obj-calls": "error",
-        "no-promise-executor-return": "error",
+        "no-promise-executor-return": "off",
         "no-prototype-builtins": "error",
         "no-self-assign": "error",
         "no-self-compare": "error",
@@ -95,7 +92,7 @@
         "no-this-before-super": "error",
         "no-undef": "error",
         "no-unexpected-multiline": "error",
-        "no-unmodified-loop-condition": "error",
+        "no-unmodified-loop-condition": "off",
         "no-unreachable": "error",
         "no-unreachable-loop": "error",
         "no-unsafe-finally": "error",
@@ -112,7 +109,12 @@
             }
         ],
         "no-unused-private-class-members": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_"
+            }
+        ],
         "no-use-before-define": [
             "error",
             {
@@ -149,7 +151,7 @@
         ],
         "capitalized-comments": "off",
         "class-methods-use-this": "error",
-        "complexity": "error",
+        "complexity": "off",
         "consistent-return": "error",
         "consistent-this": [
             "error",
@@ -272,13 +274,8 @@
         "no-lone-blocks": "error",
         "no-lonely-if": "error",
         "no-loop-func": "error",
-        "no-magic-numbers": [
-            "error",
-            {
-                "enforceConst": true
-            }
-        ],
-        "no-mixed-operators": "error",
+        "no-magic-numbers": "off",
+        "no-mixed-operators": "off",
         "no-multi-assign": "error",
         "no-multi-str": "error",
         "no-negated-condition": "off",
@@ -532,14 +529,7 @@
             "error",
             "always"
         ],
-        "max-len": [
-            "error",
-            {
-                "code": 120,
-                "tabWidth": 4,
-                "comments": 120
-            }
-        ],
+        "max-len": "off",
         "max-statements-per-line": [
             "error",
             {

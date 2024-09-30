@@ -15,29 +15,25 @@ const _ratioOfDaysToMilliseconds =
     _ratioOfSecondsToMilliseconds
 
 /**
- * @param {number} second
- * @returns {number}
+ * @type {(second:number)=>number}
  */
 export const second = second =>
     second * _ratioOfSecondsToMilliseconds
 
 /**
- * @param {number} minute
- * @returns {number}
+ * @type {(minute:number)=>number}
  */
 export const minute = minute =>
     minute * _ratioOfMinutesToMilliseconds
 
 /**
- * @param {number} hour
- * @returns {number}
+ * @type {(hour:number)=>number}
  */
 export const hour = hour =>
     hour * _ratioOfHoursToMilliseconds
 
 /**
- * @param {number} day
- * @returns {number}
+ * @type {(day:number)=>number}
  */
 export const day = day =>
     day * _ratioOfDaysToMilliseconds
@@ -54,9 +50,10 @@ export const day = day =>
  */
 
 /**
- * @param {{value:number}} target
- * @param {keyof TimeNumber} prop
- * @returns {TimeNumber[keyof TimeNumber]}
+ * @type {(
+ * target:{value:number},
+ * prop:keyof TimeNumber
+ * )=>TimeNumber[keyof TimeNumber]}
  */
 const _timeConverter = (target, prop) =>
     ({
@@ -66,13 +63,14 @@ const _timeConverter = (target, prop) =>
         hour: hour(target.value),
         day: day(target.value),
         fps: target.value,
-    }[prop])
+    })[prop]
 
 const _timeProxyHandler = {
     /**
-     * @param {{value:number}} target
-     * @param {string|symbol} prop
-     * @returns {TimeNumber[keyof TimeNumber]}
+     * @type {(
+     * target:{value:number},
+     * prop:string|symbol
+     * )=>TimeNumber[keyof TimeNumber]}
      */
     get(target, prop) {
         switch (prop) {
@@ -88,7 +86,7 @@ const _timeProxyHandler = {
         }
     },
     /**
-     * @returns {boolean}
+     * @type {()=>boolean}
      */
     set() {
         return false
@@ -292,7 +290,41 @@ export const threeHundredSixty = new Proxy({ value: 360 }, _timeProxyHandler)
 export const fiveHundred = new Proxy({ value: 500 }, _timeProxyHandler)
 
 /**
- * @param {{
+ * @type {(callback:(time:number)=>void)=>number}
+ */
+let _requestNextOpportunity =
+    requestAnimationFrame ??
+    (_ => {
+        console.error('Valid `requestAnimationFrame()` is required.')
+
+        return NaN
+    })
+
+/**
+ * @type {(handle:number)=>void}
+ */
+let _cancelNextOpportunity =
+    cancelAnimationFrame ??
+    (_ => {
+        console.error('Valid `cancelAnimationFrame()` is required.')
+    })
+
+/**
+ * @type {(args:{
+ * requestAnimationFrame:(callback:(time:number)=>void)=>number,
+ * cancelAnimationFrame:(handle:number)=>void,
+ * })=>void}
+ */
+export const specifyAnimationFrameManager = ({
+    requestAnimationFrame: request,
+    cancelAnimationFrame: cancel,
+}) => {
+    _requestNextOpportunity = request
+    _cancelNextOpportunity = cancel
+}
+
+/**
+ * @type {(args:{
  * totalTime?:number,
  * frameRate?:number,
  * actionOnStart?:()=>void,
@@ -302,8 +334,7 @@ export const fiveHundred = new Proxy({ value: 500 }, _timeProxyHandler)
  * time:number,
  * })=>void|{continueHandleFrames:boolean},
  * actionOnEnd?:()=>void,
- * }} args
- * @returns {never|(()=>void)}
+ * })=>(never|(()=>void))}
  * @throws {RangeError} `NaN`, `0`, negative numbers and non-integers are not valid for "`totalTime`" and "`frameRate`".
  * @throws {RangeError} `Infinity` is not valid for "`frameRate`".
  */
@@ -314,10 +345,9 @@ export const requestAnimationFrames = ({
     actionOnFrame,
     actionOnEnd,
 }) => {
-    const zero = 0
     if (
         typeof totalTime !== 'undefined' &&
-        (isNaN(totalTime) || totalTime <= zero || !Number.isInteger(totalTime))
+        (isNaN(totalTime) || totalTime <= 0 || !Number.isInteger(totalTime))
     ) {
         throw new RangeError(
             'NaN, 0, negative numbers and non-integers are not valid for "totalTime".',
@@ -325,7 +355,7 @@ export const requestAnimationFrames = ({
     }
     if (
         typeof frameRate !== 'undefined' &&
-        (isNaN(frameRate) || frameRate <= zero || !Number.isInteger(frameRate))
+        (isNaN(frameRate) || frameRate <= 0 || !Number.isInteger(frameRate))
     ) {
         throw new RangeError(
             'NaN, 0, negative numbers and non-integers are not valid for "frameRate".',
@@ -352,34 +382,36 @@ export const requestAnimationFrames = ({
     let previousTime = NaN
 
     /**
-     * @param {number} time
+     * @type {(time:number)=>void}
      */
     const handleTimesSideEffect = time => {
-        const actualInterval = time - previousTime
-
-        remainingTime -= actualInterval
-        remainingTime = Math.max(remainingTime, minimumRemainingTime)
+        remainingTime -= time - previousTime
+        if (remainingTime < minimumRemainingTime) {
+            remainingTime = minimumRemainingTime
+        }
 
         previousTime = time
     }
 
     /**
-     * @param {number} time
+     * @type {(time:number)=>void}
      */
     const nextStepWithoutSpecificFrameRate = time => {
         handleTimesSideEffect(time)
 
         if (remainingTime > minimumRemainingTime) {
             frameCount += oneFrame
+
             const { continueHandleFrames } = actionOnFrame({
                 remainingTime,
                 frameCount,
                 time,
             }) ?? { continueHandleFrames: true }
             if (continueHandleFrames) {
-                requestID = requestAnimationFrame(
+                requestID = _requestNextOpportunity(
                     nextStepWithoutSpecificFrameRate,
                 )
+
                 return
             }
         }
@@ -388,7 +420,7 @@ export const requestAnimationFrames = ({
     }
 
     /**
-     * @param {number} time
+     * @type {(time:number)=>void}
      */
     const nextStepWithSpecificFrameRate = time => {
         handleTimesSideEffect(time)
@@ -399,9 +431,9 @@ export const requestAnimationFrames = ({
                     (time - startTime) * specificFrameRate /
                         _ratioOfSecondsToMilliseconds,
                 ) + oneFrame
-
             if (logicalFrameCount > frameCount) {
                 frameCount = logicalFrameCount
+
                 const { continueHandleFrames } = actionOnFrame({
                     remainingTime,
                     frameCount,
@@ -409,12 +441,16 @@ export const requestAnimationFrames = ({
                 }) ?? { continueHandleFrames: true }
                 if (!continueHandleFrames) {
                     actionOnEnd && actionOnEnd()
+
                     return
                 }
             }
 
             if (frameCount < totalFrames) {
-                requestID = requestAnimationFrame(nextStepWithSpecificFrameRate)
+                requestID = _requestNextOpportunity(
+                    nextStepWithSpecificFrameRate,
+                )
+
                 return
             }
         }
@@ -423,12 +459,13 @@ export const requestAnimationFrames = ({
     }
 
     /**
-     * @param {number} time
+     * @type {(time:number)=>void}
      */
     const firstStep = time => {
         actionOnStart && actionOnStart()
 
         frameCount += oneFrame
+
         const { continueHandleFrames } = actionOnFrame({
             remainingTime,
             frameCount,
@@ -439,7 +476,7 @@ export const requestAnimationFrames = ({
         } else {
             startTime = time
             previousTime = time
-            requestID = requestAnimationFrame(
+            requestID = _requestNextOpportunity(
                 isNaN(specificFrameRate)
                     ? nextStepWithoutSpecificFrameRate
                     : nextStepWithSpecificFrameRate,
@@ -447,9 +484,10 @@ export const requestAnimationFrames = ({
         }
     }
 
-    requestID = requestAnimationFrame(firstStep)
+    requestID = _requestNextOpportunity(firstStep)
+
     return () => {
-        cancelAnimationFrame(requestID)
+        _cancelNextOpportunity(requestID)
     }
 }
 
@@ -461,9 +499,10 @@ export const requestAnimationFrames = ({
  * second:number,
  * millisecond:number,
  * }} StructuredTimeWithDayUnit
- *
- * @param {number} totalMilliseconds
- * @returns {StructuredTimeWithDayUnit}
+ */
+
+/**
+ * @type {(totalMilliseconds:number)=>StructuredTimeWithDayUnit}
  */
 const _getStructuredTimeWithDayUnit = totalMilliseconds => {
     const remainingHours = totalMilliseconds % _ratioOfDaysToMilliseconds
@@ -492,9 +531,10 @@ const _getStructuredTimeWithDayUnit = totalMilliseconds => {
  * second:number,
  * millisecond:number,
  * }} StructuredTimeWithHourUnit
- *
- * @param {number} totalMilliseconds
- * @returns {StructuredTimeWithHourUnit}
+ */
+
+/**
+ * @type {(totalMilliseconds:number)=>StructuredTimeWithHourUnit}
  */
 const _getStructuredTimeWithHourUnit = totalMilliseconds => {
     const remainingMinutes = totalMilliseconds % _ratioOfHoursToMilliseconds
@@ -519,9 +559,10 @@ const _getStructuredTimeWithHourUnit = totalMilliseconds => {
  * second:number,
  * millisecond:number,
  * }} StructuredTimeWithMinuteUnit
- *
- * @param {number} totalMilliseconds
- * @returns {StructuredTimeWithMinuteUnit}
+ */
+
+/**
+ * @type {(totalMilliseconds:number)=>StructuredTimeWithMinuteUnit}
  */
 const _getStructuredTimeWithMinuteUnit = totalMilliseconds => {
     const remainingSeconds = totalMilliseconds % _ratioOfMinutesToMilliseconds
@@ -553,4 +594,4 @@ export const getStructuredTime = (totalMilliseconds, highestUnit) =>
         day: _getStructuredTimeWithDayUnit(totalMilliseconds),
         hour: _getStructuredTimeWithHourUnit(totalMilliseconds),
         minute: _getStructuredTimeWithMinuteUnit(totalMilliseconds),
-    }[highestUnit])
+    })[highestUnit]

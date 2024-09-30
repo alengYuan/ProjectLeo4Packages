@@ -1,12 +1,8 @@
 {
-  "eslint.validate": [
-      "javascript",
-      "javascriptreact"
-  ],
-  "[javascript]": {
-      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
-  "[javascriptreact]": {
-      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  }
+    "eslint.validate": [
+        "javascript"
+    ],
+    "[javascript]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    }
 }
