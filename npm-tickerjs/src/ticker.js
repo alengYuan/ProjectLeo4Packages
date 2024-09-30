@@ -5,14 +5,9 @@ const _ratioOfSecondsToMilliseconds = 1000
 const _ratioOfMinutesToMilliseconds =
     _ratioOfMinutesToSeconds * _ratioOfSecondsToMilliseconds
 const _ratioOfHoursToMilliseconds =
-    _ratioOfHoursToMinutes *
-    _ratioOfMinutesToSeconds *
-    _ratioOfSecondsToMilliseconds
+    _ratioOfHoursToMinutes * _ratioOfMinutesToMilliseconds
 const _ratioOfDaysToMilliseconds =
-    _ratioOfDaysToHours *
-    _ratioOfHoursToMinutes *
-    _ratioOfMinutesToSeconds *
-    _ratioOfSecondsToMilliseconds
+    _ratioOfDaysToHours * _ratioOfHoursToMilliseconds
 
 /**
  * @type {(second:number)=>number}
