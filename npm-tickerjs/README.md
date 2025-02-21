@@ -1,4 +1,4 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.37%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.43%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
 
 Tickerjs provides a more easier way to request animation frames.
 
@@ -84,12 +84,13 @@ const requestAnimationFrames: (args: {
     actionOnFrame:³ (args: {
         remainingTime:⁴ number;
         frameCount:⁵ number;
-        time:⁶ number;
-    }) =>⁷ void | {
+        delta:⁶ number;
+        time:⁷ number;
+    }) =>⁸ void | {
         continueHandleFrames: boolean;
     };
-    actionOnEnd?:⁸ () => void;
-}) =>⁹ (never | (() => void));
+    actionOnEnd?:⁹ () => void;
+}) =>¹⁰ (never | (() => void));
 ```
 
 -   ⁰ [`totalTime`]: Total time of animation, in milliseconds, if it is not specified, its value is `Infinity`.
@@ -98,10 +99,11 @@ const requestAnimationFrames: (args: {
 -   ³ [`actionOnFrame`]: Called at every valid frames, it means that not every logical frames could call it if the specified frame rate is higher than display refresh rate.
 -   ⁴ [`remainingTime`]: Remaining time of animation, in milliseconds.
 -   ⁵ [`frameCount`]: Frame counts calculated from one, it doesn't always increase one by one if the specified frame rate is higher than display refresh rate.
--   ⁶ [`time`]: Same as the parameter of callback for `requestAnimationFrame`.
--   ⁷ [`actionOnFrame()`]: It could return a value to end the animation in advance, and `actionOnEnd` would be called.
--   ⁸ [`actionOnEnd`]: Called when the animation ends.
--   ⁹ [`requestAnimationFrames()`]: It would return a function used to cancel remaining animation frames, if use this function, `actionOnEnd` would not be called.
+-   ⁶ [`delta`]: Delta timing, in seconds, its value is always 0 at the first frame.
+-   ⁷ [`time`]: Same as the parameter of callback for `requestAnimationFrame`.
+-   ⁸ [`actionOnFrame()`]: It could return a value to end the animation in advance, and `actionOnEnd` would be called.
+-   ⁹ [`actionOnEnd`]: Called when the animation ends.
+-   ¹⁰ [`requestAnimationFrames()`]: It would return a function used to cancel remaining animation frames, if use this function, `actionOnEnd` would not be called.
 
 ### Configuration function
 

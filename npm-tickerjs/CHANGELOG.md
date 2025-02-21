@@ -2,6 +2,12 @@
 
 This file is used to record [Added, Changed, Fixed, Removed] of the files that are closely related to this package.
 
+## [`1.3.0`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.3.0) - 2025-02-21
+
+### Added
+
+- Callback function `actionOnFrame()` in `requestAnimationFrames()`'s parameter now provides `delta`.
+
 ## [`1.2.1`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.2.1) - 2024-09-30
 
 ### Changed

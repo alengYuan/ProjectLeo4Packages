@@ -326,6 +326,7 @@ export const specifyAnimationFrameManager = ({
  * actionOnFrame:(args:{
  * remainingTime:number,
  * frameCount:number,
+ * delta:number,
  * time:number,
  * })=>void|{continueHandleFrames:boolean},
  * actionOnEnd?:()=>void,
@@ -376,6 +377,9 @@ export const requestAnimationFrames = ({
     let startTime = NaN
     let previousTime = NaN
 
+    let factorOnFrameCount = NaN
+    let factorOnTimeInterval = NaN
+
     /**
      * @type {(time:number)=>void}
      */
@@ -400,8 +404,14 @@ export const requestAnimationFrames = ({
             const { continueHandleFrames } = actionOnFrame({
                 remainingTime,
                 frameCount,
+                delta:
+                    (time - factorOnTimeInterval) /
+                    _ratioOfSecondsToMilliseconds,
                 time,
             }) ?? { continueHandleFrames: true }
+
+            factorOnTimeInterval = time
+
             if (continueHandleFrames) {
                 requestID = _requestNextOpportunity(
                     nextStepWithoutSpecificFrameRate,
@@ -432,8 +442,13 @@ export const requestAnimationFrames = ({
                 const { continueHandleFrames } = actionOnFrame({
                     remainingTime,
                     frameCount,
+                    delta:
+                        (frameCount - factorOnFrameCount) / specificFrameRate,
                     time,
                 }) ?? { continueHandleFrames: true }
+
+                factorOnFrameCount = frameCount
+
                 if (!continueHandleFrames) {
                     actionOnEnd && actionOnEnd()
 
@@ -464,8 +479,13 @@ export const requestAnimationFrames = ({
         const { continueHandleFrames } = actionOnFrame({
             remainingTime,
             frameCount,
+            delta: 0,
             time,
         }) ?? { continueHandleFrames: true }
+
+        factorOnFrameCount = frameCount
+        factorOnTimeInterval = time
+
         if (!continueHandleFrames) {
             actionOnEnd && actionOnEnd()
         } else {
