@@ -285,29 +285,44 @@ export const threeHundredSixty = new Proxy({ value: 360 }, _timeProxyHandler)
 export const fiveHundred = new Proxy({ value: 500 }, _timeProxyHandler)
 
 /**
- * @type {(callback:(time:number)=>void)=>number}
+ * @type {(callback:(time:number)=>void)=>number|NodeJS.Immediate}
  */
 let _requestNextOpportunity =
-    requestAnimationFrame ??
-    (_ => {
-        console.error('Valid `requestAnimationFrame()` is required.')
+    globalThis.requestAnimationFrame ??
+    ('setImmediate' in globalThis
+        ? callback =>
+            globalThis.setImmediate(() =>
+                callback(performance.now()))
+        : _ => {
+            console.error('Valid `requestAnimationFrame()` is required.')
 
-        return NaN
-    })
+            return NaN
+        })
 
 /**
- * @type {(handle:number)=>void}
+ * @type {(handle:number|NodeJS.Immediate)=>void}
  */
 let _cancelNextOpportunity =
-    cancelAnimationFrame ??
-    (_ => {
-        console.error('Valid `cancelAnimationFrame()` is required.')
-    })
+    'cancelAnimationFrame' in globalThis
+        ? handle => {
+            if (typeof handle === 'number') {
+                globalThis.cancelAnimationFrame(handle)
+            }
+        }
+        : 'clearImmediate' in globalThis
+            ? handle => {
+                if (typeof handle === 'object') {
+                    globalThis.clearImmediate(handle)
+                }
+            }
+            : _ => {
+                console.error('Valid `cancelAnimationFrame()` is required.')
+            }
 
 /**
  * @type {(args:{
- * requestAnimationFrame:(callback:(time:number)=>void)=>number,
- * cancelAnimationFrame:(handle:number)=>void,
+ * requestAnimationFrame:(callback:(time:number)=>void)=>number|NodeJS.Immediate,
+ * cancelAnimationFrame:(handle:number|NodeJS.Immediate)=>void,
  * })=>void}
  */
 export const specifyAnimationFrameManager = ({
@@ -373,6 +388,9 @@ export const requestAnimationFrames = ({
         remainingTime * specificFrameRate / _ratioOfSecondsToMilliseconds,
     )
 
+    /**
+     * @type {number|NodeJS.Immediate}
+     */
     let requestID = NaN
     let startTime = NaN
     let previousTime = NaN

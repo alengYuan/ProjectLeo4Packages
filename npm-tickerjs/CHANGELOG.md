@@ -2,6 +2,20 @@
 
 This file is used to record [Added, Changed, Fixed, Removed] of the files that are closely related to this package.
 
+## [`1.4.0`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.4.0) - 2025-03-30
+
+### Added
+
+- Default implementations of `requestAnimationFrame()` and `cancelAnimationFrame()` in Node.js.
+
+### Changed
+
+- `specifyAnimationFrameManager()` now supports a wider range of types.
+
+### Fixed
+
+- Crashes in Node.js.
+
 ## [`1.3.0`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.3.0) - 2025-02-21
 
 ### Added

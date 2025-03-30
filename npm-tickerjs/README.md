@@ -1,4 +1,4 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.43%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.68%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
 
 Tickerjs provides a more easier way to request animation frames.
 
@@ -111,8 +111,8 @@ You may use polyfill if you need your application to run in any runtime that doe
 
 ```typescript
 const specifyAnimationFrameManager: (args: {
-    requestAnimationFrame:⁰ (callback: (time: number) => void) => number;
-    cancelAnimationFrame:¹ (handle: number) => void;
+    requestAnimationFrame:⁰ (callback: (time: number) => void) => number | NodeJS.Immediate;
+    cancelAnimationFrame:¹ (handle: number | NodeJS.Immediate) => void;
 }) => void;
 ```
 
