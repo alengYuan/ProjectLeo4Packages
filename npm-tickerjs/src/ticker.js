@@ -45,10 +45,10 @@ export const day = day =>
  */
 
 /**
- * @type {(
+ * @type {<KEY extends keyof TimeNumber>(
  * target:{value:number},
- * prop:keyof TimeNumber
- * )=>TimeNumber[keyof TimeNumber]}
+ * prop:KEY,
+ * )=>TimeNumber[KEY]}
  */
 const _timeConverter = (target, prop) =>
     ({
@@ -64,7 +64,7 @@ const _timeProxyHandler = {
     /**
      * @type {(
      * target:{value:number},
-     * prop:string|symbol
+     * prop:string|symbol,
      * )=>TimeNumber[keyof TimeNumber]}
      */
     get(target, prop) {
@@ -285,44 +285,25 @@ export const threeHundredSixty = new Proxy({ value: 360 }, _timeProxyHandler)
 export const fiveHundred = new Proxy({ value: 500 }, _timeProxyHandler)
 
 /**
- * @type {(callback:(time:number)=>void)=>number|NodeJS.Immediate}
+ * @type {(callback:(time:number)=>void)=>any}
  */
-let _requestNextOpportunity =
-    globalThis.requestAnimationFrame ??
-    ('setImmediate' in globalThis
-        ? callback =>
-            globalThis.setImmediate(() =>
-                callback(performance.now()))
-        : _ => {
-            console.error('Valid `requestAnimationFrame()` is required.')
+let _requestNextOpportunity = _ => {
+    console.error('Valid `requestAnimationFrame()` is required.')
 
-            return NaN
-        })
+    return NaN
+}
 
 /**
- * @type {(handle:number|NodeJS.Immediate)=>void}
+ * @type {(handle:any)=>void}
  */
-let _cancelNextOpportunity =
-    'cancelAnimationFrame' in globalThis
-        ? handle => {
-            if (typeof handle === 'number') {
-                globalThis.cancelAnimationFrame(handle)
-            }
-        }
-        : 'clearImmediate' in globalThis
-            ? handle => {
-                if (typeof handle === 'object') {
-                    globalThis.clearImmediate(handle)
-                }
-            }
-            : _ => {
-                console.error('Valid `cancelAnimationFrame()` is required.')
-            }
+let _cancelNextOpportunity = _ => {
+    console.error('Valid `cancelAnimationFrame()` is required.')
+}
 
 /**
- * @type {(args:{
- * requestAnimationFrame:(callback:(time:number)=>void)=>number|NodeJS.Immediate,
- * cancelAnimationFrame:(handle:number|NodeJS.Immediate)=>void,
+ * @type {<T>(args:{
+ * requestAnimationFrame:(callback:(time:number)=>void)=>T,
+ * cancelAnimationFrame:(handle:T)=>void,
  * })=>void}
  */
 export const specifyAnimationFrameManager = ({
@@ -331,6 +312,23 @@ export const specifyAnimationFrameManager = ({
 }) => {
     _requestNextOpportunity = request
     _cancelNextOpportunity = cancel
+}
+
+if (
+    'requestAnimationFrame' in globalThis &&
+    'cancelAnimationFrame' in globalThis
+) {
+    specifyAnimationFrameManager({
+        requestAnimationFrame: globalThis.requestAnimationFrame,
+        cancelAnimationFrame: globalThis.cancelAnimationFrame,
+    })
+} else if ('setImmediate' in globalThis && 'clearImmediate' in globalThis) {
+    specifyAnimationFrameManager({
+        requestAnimationFrame: callback =>
+            setImmediate(() =>
+                callback(performance.now())),
+        cancelAnimationFrame: clearImmediate,
+    })
 }
 
 /**
@@ -389,7 +387,7 @@ export const requestAnimationFrames = ({
     )
 
     /**
-     * @type {number|NodeJS.Immediate}
+     * @type {any}
      */
     let requestID = NaN
     let startTime = NaN
@@ -618,9 +616,10 @@ const _getStructuredTimeWithMinuteUnit = totalMilliseconds => {
  * minute:StructuredTimeWithMinuteUnit,
  * }} StructuredTimes
  *
- * @type {<T extends keyof StructuredTimes>(
- * totalMilliseconds:number,highestUnit:T,
- * )=>StructuredTimes[T]}
+ * @type {<KEY extends keyof StructuredTimes>(
+ * totalMilliseconds:number,
+ * highestUnit:KEY,
+ * )=>StructuredTimes[KEY]}
  */
 export const getStructuredTime = (totalMilliseconds, highestUnit) =>
     ({

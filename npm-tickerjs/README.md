@@ -1,4 +1,4 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.68%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.74%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
 
 Tickerjs provides a more easier way to request animation frames.
 
@@ -110,9 +110,9 @@ const requestAnimationFrames: (args: {
 You may use polyfill if you need your application to run in any runtime that doesn't support `requestAnimationFrame` and `cancelAnimationFrame`. Tickerjs provides a function to help you to let them work with `requestAnimationFrames` without affecting the global variable.
 
 ```typescript
-const specifyAnimationFrameManager: (args: {
-    requestAnimationFrame:⁰ (callback: (time: number) => void) => number | NodeJS.Immediate;
-    cancelAnimationFrame:¹ (handle: number | NodeJS.Immediate) => void;
+const specifyAnimationFrameManager: <T>(args: {
+    requestAnimationFrame:⁰ (callback: (time: number) => void) => T;
+    cancelAnimationFrame:¹ (handle: T) => void;
 }) => void;
 ```
 
@@ -150,8 +150,8 @@ type StructuredTimes = {
 };
 
 const getStructuredTime:
-    <T extends keyof StructuredTimes>(totalMilliseconds:⁰ number, highestUnit:¹ T) =>²
-    StructuredTimes[T];
+    <KEY extends keyof StructuredTimes>(totalMilliseconds:⁰ number, highestUnit:¹ KEY) =>²
+    StructuredTimes[KEY];
 ```
 
 -   ⁰ [`totalMilliseconds`]: Total time to be structured, in milliseconds.
@@ -160,36 +160,36 @@ const getStructuredTime:
 
 Tickerjs provides a series of commonly used numerical constants:
 
-|Number|Object|Property|Property|Property|Property|Property|Property|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**1**|**one**|*millisecond*|*second*|***minute***|***hour***|***day***|***fps***|
-|**2**|**two**|*millisecond*|*second*|***minute***|***hour***|***day***|*fps*|
-|**3**|**three**|*millisecond*|***second***|***minute***|***hour***|***day***|*fps*|
-|**5**|**five**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**7**|**seven**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**10**|**ten**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**12**|**twelve**|*millisecond*|*second*|*minute*|***hour***|*day*|*fps*|
-|**14**|**fourteen**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**15**|**fifteen**|*millisecond*|***second***|***minute***|*hour*|***day***|*fps*|
-|**20**|**twenty**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**21**|**twentyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**24**|**twentyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**25**|**twentyFive**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**28**|**twentyEight**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**29**|**twentyNine**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**30**|**thirty**|*millisecond*|***second***|***minute***|*hour*|***day***|***fps***|
-|**31**|**thirtyOne**|*millisecond*|*second*|*minute*|*hour*|***day***|*fps*|
-|**45**|**fortyFive**|*millisecond*|***second***|***minute***|*hour*|*day*|*fps*|
-|**48**|**fortyEight**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**50**|**fifty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**60**|**sixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**90**|**ninety**|*millisecond*|***second***|***minute***|*hour*|*day*|***fps***|
-|**120**|**oneHundredTwenty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**144**|**oneHundredFortyFour**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**240**|**twoHundredForty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**300**|**threeHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**360**|**threeHundredSixty**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
-|**500**|**fiveHundred**|*millisecond*|*second*|*minute*|*hour*|*day*|***fps***|
+| Number  |         Object          |   Property    |   Property   |   Property   |  Property  | Property  | Property  |
+| :-----: | :---------------------: | :-----------: | :----------: | :----------: | :--------: | :-------: | :-------: |
+|  **1**  |         **one**         | *millisecond* |   *second*   | ***minute*** | ***hour*** | ***day*** | ***fps*** |
+|  **2**  |         **two**         | *millisecond* |   *second*   | ***minute*** | ***hour*** | ***day*** |   *fps*   |
+|  **3**  |        **three**        | *millisecond* | ***second*** | ***minute*** | ***hour*** | ***day*** |   *fps*   |
+|  **5**  |        **five**         | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   |   *fps*   |
+|  **7**  |        **seven**        | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **10**  |         **ten**         | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   |   *fps*   |
+| **12**  |       **twelve**        | *millisecond* |   *second*   |   *minute*   | ***hour*** |   *day*   |   *fps*   |
+| **14**  |      **fourteen**       | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **15**  |       **fifteen**       | *millisecond* | ***second*** | ***minute*** |   *hour*   | ***day*** |   *fps*   |
+| **20**  |       **twenty**        | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   |   *fps*   |
+| **21**  |      **twentyOne**      | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **24**  |     **twentyFour**      | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **25**  |     **twentyFive**      | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **28**  |     **twentyEight**     | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **29**  |     **twentyNine**      | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **30**  |       **thirty**        | *millisecond* | ***second*** | ***minute*** |   *hour*   | ***day*** | ***fps*** |
+| **31**  |      **thirtyOne**      | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
+| **45**  |      **fortyFive**      | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   |   *fps*   |
+| **48**  |     **fortyEight**      | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **50**  |        **fifty**        | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **60**  |        **sixty**        | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **90**  |       **ninety**        | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   | ***fps*** |
+| **120** |  **oneHundredTwenty**   | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **144** | **oneHundredFortyFour** | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **240** |   **twoHundredForty**   | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **300** |    **threeHundred**     | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **360** |  **threeHundredSixty**  | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
+| **500** |     **fiveHundred**     | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
 
 If you need other specific values for `totalTime` of `requestAnimationFrames`, these functions would be useful:
 

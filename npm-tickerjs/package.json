@@ -1,6 +1,6 @@
 {
   "name": "@projectleo/tickerjs",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A more easier way to request animation frames.",
   "main": "dist/ticker.js",
   "types": "types/ticker.d.ts",
