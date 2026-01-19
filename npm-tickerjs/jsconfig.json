@@ -14,10 +14,9 @@
         "target": "esnext"
     },
     "exclude": [
-        "**/node_modules/*",
+        ".vscode",
         "dist",
         "node_modules",
-        "temp",
-        "tmp"
+        "types"
     ]
 }
