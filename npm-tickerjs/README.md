@@ -1,6 +1,6 @@
-# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.74%20kB-brightgreen)](https://www.unpkg.com/@projectleo/tickerjs)
+# Tickerjs @ProjectLeo &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-6e528b?style=flat-square&labelColor=484848)](https://github.com/alengYuan/ProjectLeo4Packages/blob/main/npm-tickerjs/LICENSE) [![npm version](https://img.shields.io/npm/v/@projectleo/tickerjs?style=flat-square&labelColor=484848&color=904b40)](https://www.npmjs.com/package/@projectleo/tickerjs) [![npm type definitions](https://img.shields.io/npm/types/%40projectleo%2Ftickerjs?style=flat-square&labelColor=484848&color=30628c)](https://www.npmjs.com/package/@projectleo/tickerjs?activeTab=code) [![bundle size](https://img.shields.io/badge/bundle%20size-3.78%20kB-brightgreen?style=flat-square&labelColor=484848&color=426834)](https://www.unpkg.com/@projectleo/tickerjs)
 
-Tickerjs provides a more easier way to request animation frames.
+Tickerjs provides a far easier way to request animation frames.
 
 ## Installation
 
@@ -13,7 +13,7 @@ npm install @projectleo/tickerjs
 Basic example:
 
 ```javascript
-import { requestAnimationFrames } from '@projectleo/tickerjs'
+import { five, requestAnimationFrames } from '@projectleo/tickerjs'
 
 const cancelAnimationFrames = requestAnimationFrames({
     actionOnFrame() {
@@ -21,7 +21,7 @@ const cancelAnimationFrames = requestAnimationFrames({
     },
 })
 
-setTimeout(cancelAnimationFrames, 5000)
+setTimeout(cancelAnimationFrames, five.second)
 ```
 
 Complicated example:
@@ -171,6 +171,7 @@ Tickerjs provides a series of commonly used numerical constants:
 | **12**  |       **twelve**        | *millisecond* |   *second*   |   *minute*   | ***hour*** |   *day*   |   *fps*   |
 | **14**  |      **fourteen**       | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
 | **15**  |       **fifteen**       | *millisecond* | ***second*** | ***minute*** |   *hour*   | ***day*** |   *fps*   |
+| **18**  |      **eighteen**       | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |
 | **20**  |       **twenty**        | *millisecond* | ***second*** | ***minute*** |   *hour*   |   *day*   |   *fps*   |
 | **21**  |      **twentyOne**      | *millisecond* |   *second*   |   *minute*   |   *hour*   | ***day*** |   *fps*   |
 | **24**  |     **twentyFour**      | *millisecond* |   *second*   |   *minute*   |   *hour*   |   *day*   | ***fps*** |

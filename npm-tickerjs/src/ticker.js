@@ -156,6 +156,13 @@ export const fifteen = new Proxy({ value: 15 }, _timeProxyHandler)
  */
 // HACK: It's reasonable, when the proxy is still matched.
 // @ts-ignore
+export const eighteen = new Proxy({ value: 18 }, _timeProxyHandler)
+
+/**
+ * @type {TimeNumber}
+ */
+// HACK: It's reasonable, when the proxy is still matched.
+// @ts-ignore
 export const twenty = new Proxy({ value: 20 }, _timeProxyHandler)
 
 /**

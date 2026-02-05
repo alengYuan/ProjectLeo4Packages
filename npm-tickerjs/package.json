@@ -1,7 +1,7 @@
 {
   "name": "@projectleo/tickerjs",
-  "version": "1.4.1",
-  "description": "A more easier way to request animation frames.",
+  "version": "1.5.0",
+  "description": "A far easier way to request animation frames.",
   "main": "dist/ticker.js",
   "types": "types/ticker.d.ts",
   "type": "module",
@@ -33,6 +33,7 @@
   },
   "overrides": {
     "js-yaml": "~4.1.1",
+    "lodash": "~4.17.23",
     "prettier": "~3.3.3"
   }
 }

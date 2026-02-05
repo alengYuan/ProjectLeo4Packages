@@ -2,6 +2,12 @@
 
 This file is used to record [Added, Changed, Fixed, Removed] of the files that are closely related to this package.
 
+## [`1.5.0`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.5.0) - 2026-02-05
+
+### Added
+
+- One commonly used numerical constant.
+
 ## [`1.4.1`](https://www.npmjs.com/package/@projectleo/tickerjs/v/1.4.1) - 2025-11-10
 
 ### Changed
