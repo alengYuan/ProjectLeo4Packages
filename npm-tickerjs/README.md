@@ -36,13 +36,19 @@ import {
 
 /* some code */
 
+const totalTime = thirty.second
+
 const { minute: totalMinutes, second: totalSeconds } = getStructuredTime(
-    thirty.second,
+    totalTime,
     'minute',
 )
 
+const totalTimeText = ` / ${String(totalMinutes)
+    .padStart(2, '0')}:${String(totalSeconds)
+    .padStart(2, '0')}`
+
 requestAnimationFrames({
-    totalTime: thirty.second,
+    totalTime,
     frameRate: twentyFour.fps,
     actionOnStart() {
         audioElement.play()
@@ -50,12 +56,14 @@ requestAnimationFrames({
     actionOnFrame({ remainingTime, frameCount }) {
         /* some code */
 
-        const { minute: remainingMinutes, second: remainingSeconds } =
-            getStructuredTime(remainingTime, 'minute')
+        const { minute: currentMinutes, second: currentSeconds } =
+            getStructuredTime(totalTime - remainingTime, 'minute')
 
-        ctx.drawImage(imageFrames[frameCount], 0, 0)
+        ctx.drawImage(imageFrames[frameCount - 1], 0, 0)
         ctx.fillText(
-            `${remainingMinutes}:${remainingSeconds} / ${totalMinutes}:${totalSeconds}`,
+            `${String(currentMinutes)
+                .padStart(2, '0')}:${String(currentSeconds)
+                .padStart(2, '0')}${totalTimeText}`,
             4,
             20,
         )
